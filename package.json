@@ -1,27 +1,46 @@
 {
   "name": "311-app",
   "version": "0.1.0",
+  "repository": "https://github.com/CityOfBoston/311.git",
   "license": "CC0-1.0",
   "private": true,
-  "devDependencies": {
-    "react-native-scripts": "0.0.31",
-    "jest-expo": "~1.0.1",
-    "react-test-renderer": "16.0.0-alpha.6"
-  },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "start": "react-native-scripts start",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "test": "node node_modules/jest/bin/jest.js --watch",
+    "lint": "eslint --fix .",
+    "precommit": "lint-staged",
+    "prepush": "flow --quiet && node node_modules/jest/bin/jest.js --silent --no-cache --noStackTrace --lastCommit"
   },
   "jest": {
     "preset": "jest-expo"
+  },
+  "lint-staged": {
+    "*.js": "eslint --quiet"
   },
   "dependencies": {
     "expo": "^17.0.0",
     "react": "16.0.0-alpha.6",
     "react-native": "^0.44.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "codecov": "^2.2.0",
+    "eslint": "^3",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-flowtype": "^2.34.0",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-react-native": "^2.3.2",
+    "flow-bin": "^0.42.0",
+    "husky": "^0.13.4",
+    "jest-expo": "~1.0.1",
+    "lint-staged": "^3.6.1",
+    "react-native-scripts": "0.0.31",
+    "react-test-renderer": "16.0.0-alpha.6"
   }
 }

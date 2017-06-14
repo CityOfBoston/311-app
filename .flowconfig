@@ -31,6 +31,7 @@
 .*/node_modules/react-native-fbads/*
 
 [include]
+flow-typed
 
 [libs]
 node_modules/react-native/Libraries/react-native/react-native-interface.js
