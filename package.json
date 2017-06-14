@@ -25,19 +25,19 @@
   "dependencies": {
     "expo": "^17.0.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "^0.45.1"
+    "react-native": "^0.44"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "codecov": "^2.2.0",
-    "eslint": "^4.0.0",
+    "eslint": "^3",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-react-native": "^2.3.2",
-    "flow-bin": "^0.48.0",
+    "flow-bin": "^0.42.0",
     "husky": "^0.13.4",
     "jest-expo": "~1.0.1",
     "lint-staged": "^3.6.1",
