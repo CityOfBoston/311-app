@@ -1,6 +1,7 @@
 {
   "name": "311-app",
   "version": "0.1.0",
+  "license": "CC0-1.0",
   "private": true,
   "devDependencies": {
     "react-native-scripts": "0.0.31",
