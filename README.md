@@ -1,3 +1,9 @@
+<img src="https://cloud.githubusercontent.com/assets/9234/19400090/8c20c53c-9222-11e6-937c-02bce55e5301.png" alt="City of Boston" width="150" />
+
+[![Build Status](https://travis-ci.org/CityOfBoston/311-app.svg?branch=develop)](https://travis-ci.org/CityOfBoston/311-app)
+[![codecov](https://codecov.io/gh/CityOfBoston/311-app/branch/develop/graph/badge.svg)](https://codecov.io/gh/CityOfBoston/311-app)
+[![Greenkeeper badge](https://badges.greenkeeper.io/CityOfBoston/311-app.svg)](https://greenkeeper.io/)
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
