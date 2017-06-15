@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/CityOfBoston/311-app.svg?branch=develop)](https://travis-ci.org/CityOfBoston/311-app)
 [![codecov](https://codecov.io/gh/CityOfBoston/311-app/branch/develop/graph/badge.svg)](https://codecov.io/gh/CityOfBoston/311-app)
 [![Greenkeeper badge](https://badges.greenkeeper.io/CityOfBoston/311-app.svg)](https://greenkeeper.io/)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
