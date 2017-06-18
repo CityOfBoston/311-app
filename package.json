@@ -41,7 +41,7 @@
     "flow-bin": "^0.42.0",
     "husky": "^0.13.4",
     "jest-expo": "~1.0.1",
-    "lint-staged": "^3.6.1",
+    "lint-staged": "^4.0.0",
     "prettier": "^1.4.4",
     "react-native-scripts": "0.0.31",
     "react-test-renderer": "16.0.0-alpha.6"
