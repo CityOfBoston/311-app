@@ -7,6 +7,7 @@
 
 ; Ignore unexpected extra "@providesModule"
 .*/node_modules/.*/node_modules/fbjs/.*
+.*/node_modules/.*/__tests__/.*
 
 ; Ignore duplicate module providers
 ; For RN Apps installed via npm, "Libraries" folder is inside
@@ -30,13 +31,12 @@
 ; Ignore react-native-fbads dependency of the expo sdk
 .*/node_modules/react-native-fbads/*
 
-[include]
-flow-typed
-
 [libs]
 node_modules/react-native/Libraries/react-native/react-native-interface.js
 node_modules/react-native/flow
 flow/
+flow-decl/
+flow-typed/
 
 [options]
 module.system=haste
@@ -44,6 +44,7 @@ module.system=haste
 emoji=true
 
 experimental.strict_type_args=true
+esproposal.decorators=ignore
 
 munge_underscores=true
 
@@ -59,6 +60,9 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
 suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 
 unsafe.enable_getters_and_setters=true
+module.file_ext=.graphql
+module.file_ext=.js
+module.file_ext=.json 
 
 [version]
 ^0.42.0

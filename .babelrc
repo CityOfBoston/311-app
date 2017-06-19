@@ -1,8 +1,20 @@
 {
-  "presets": ["babel-preset-expo"],
+  "plugins": [
+    "transform-decorators-legacy",
+    ["inline-import", {
+      "extensions": [
+        ".graphql",
+        ".env",
+        ".html"
+      ]
+    }]
+  ],
+
+  "presets": ["babel-preset-expo", "react-native-dotenv"],
+
   "env": {
     "development": {
-      "plugins": ["transform-react-jsx-source"]
+      "plugins": [ "transform-react-jsx-source" ]
     }
   }
 }
