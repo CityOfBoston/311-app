@@ -3,7 +3,6 @@
 import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 import { runInAction } from 'mobx';
-import { ImagePicker } from 'expo';
 
 import type { RequestNavigationProps } from './RequestModal';
 import CloseButton from '../common/CloseButton';
@@ -33,7 +32,7 @@ export default class PhotoScreen extends React.Component {
   pickFromLibrary = async () => {
     const { request } = this.props.screenProps;
 
-    const out = await ImagePicker.launchImageLibraryAsync();
+    const out = {};
     runInAction(() => {
       if (!out.cancelled) {
         request.localImageUris.push(out.uri);

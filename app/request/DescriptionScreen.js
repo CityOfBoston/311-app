@@ -62,12 +62,13 @@ export default class DescriptionScreen extends React.Component {
     const { request } = this.props.screenProps;
     return (
       <View behavior="padding" style={styles.container}>
-        {request.localImageUris.length &&
-          <View style={styles.imageContainer}>
-            {request.localImageUris.map(uri =>
-              <Image key={uri} style={styles.imageThumb} source={{ uri }} />,
-            )}
-          </View>}
+        {request.localImageUris.length
+          ? <View style={styles.imageContainer}>
+              {request.localImageUris.map(uri =>
+                <Image key={uri} style={styles.imageThumb} source={{ uri }} />,
+              )}
+            </View>
+          : null}
 
         <Text>How can we help?</Text>
         <TextInput
