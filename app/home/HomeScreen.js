@@ -21,6 +21,8 @@ import type { SubmittedRequest } from '../types';
 import fetchGraphql from '../fetch-graphql';
 import submitRequest from '../queries/submit-request';
 
+import RecentRequestsMap from './RecentRequestsMap';
+
 import RequestModal from '../request/RequestModal';
 import type { RequestScreenProps } from '../request/RequestModal';
 
@@ -28,7 +30,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
   },
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     width: 150,
     justifyContent: 'center',
+    alignSelf: 'center',
     borderRadius: 75,
     flexDirection: 'column',
   },
@@ -99,6 +101,8 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        <RecentRequestsMap />
+
         <Modal
           animationType={'slide'}
           transparent={false}
