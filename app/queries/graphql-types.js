@@ -119,6 +119,34 @@ export type LoadServiceSuggestionsQuery = {|
   |} >,
 |};
 
+export type SearchCasesQueryVariables = {|
+  query: ?string,
+  topLeft: ?LatLngIn,
+  bottomRight: ?LatLngIn,
+|};
+
+export type SearchCasesQuery = {|
+  searchCases: {|
+    query: string,
+    cases: Array< {|
+      id: string,
+      status: string,
+      description: ?string,
+      address: ?string,
+      mediaUrl: ?string,
+      requestedAt: number,
+      requestedAtRelativeString: string,
+      location: ? {|
+        lat: number,
+        lng: number,
+      |},
+      service: {|
+        name: string,
+      |},
+    |} >,
+  |},
+|};
+
 export type SubmitRequestMutationVariables = {|
   code: string,
   description: string,

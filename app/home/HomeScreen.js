@@ -15,11 +15,13 @@ import type { IPromiseBasedObservable } from 'mobx-utils';
 
 import Request from '../store/Request';
 
-import { OPTIMISTIC_BLUE } from '../common/style-constants';
+import { YELLOW } from '../common/style-constants';
 
 import type { SubmittedRequest } from '../types';
 import fetchGraphql from '../fetch-graphql';
 import submitRequest from '../queries/submit-request';
+
+import RecentRequestsMap from './RecentRequestsMap';
 
 import RequestModal from '../request/RequestModal';
 import type { RequestScreenProps } from '../request/RequestModal';
@@ -28,21 +30,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
   },
   startButton: {
-    backgroundColor: OPTIMISTIC_BLUE,
-    aspectRatio: 1,
-    width: 150,
+    backgroundColor: YELLOW,
+    width: 56,
+    height: 56,
     justifyContent: 'center',
-    borderRadius: 75,
+    borderRadius: 28,
     flexDirection: 'column',
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
   },
   startButtonText: {
     color: '#fff',
+    backgroundColor: 'transparent',
     textAlign: 'center',
+    fontSize: 40,
+    lineHeight: 40,
   },
 });
 
@@ -99,6 +106,8 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        <RecentRequestsMap />
+
         <Modal
           animationType={'slide'}
           transparent={false}
@@ -117,7 +126,7 @@ export default class HomeScreen extends React.Component {
         </Modal>
 
         <TouchableHighlight style={styles.startButton} onPress={this.openModal}>
-          <Text style={styles.startButtonText}>Start Request</Text>
+          <Text style={styles.startButtonText}>+</Text>
         </TouchableHighlight>
       </View>
     );
