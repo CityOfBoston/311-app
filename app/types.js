@@ -3,6 +3,7 @@
 import type {
   LoadServiceQuery,
   LoadServiceSuggestionsQuery,
+  SearchCasesQuery,
   ServiceAttributeDatatype,
   SubmitRequestMutation,
 } from './queries/graphql-types';
@@ -42,4 +43,9 @@ export type CalculatedAttribute = {
 export type SubmittedRequest = $PropertyType<
   SubmitRequestMutation,
   'createRequest',
+>;
+
+export type SearchCasesResult = $PropertyType<SearchCasesQuery, 'searchCases'>;
+export type SearchCase = $ArrayElement<
+  $PropertyType<SearchCasesResult, 'cases'>,
 >;
