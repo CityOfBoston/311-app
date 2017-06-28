@@ -4,13 +4,11 @@ import React, { Component } from 'react';
 import Mapbox, { MapView } from 'react-native-mapbox-gl';
 import { StyleSheet, View } from 'react-native';
 import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE_PATH } from 'react-native-dotenv';
-import { observable, runInAction, reaction, action } from 'mobx';
-import { observer } from 'mobx-react/native';
+import { observable, runInAction, reaction, action, computed } from 'mobx';
+import { observer, inject } from 'mobx-react/native';
 
+import type CaseSearch from '../store/CaseSearch';
 import type { SearchCase } from '../types';
-
-import fetchGraphql from '../fetch-graphql';
-import searchCases from '../queries/search-cases';
 
 Mapbox.setAccessToken(MAPBOX_ACCESS_TOKEN);
 
@@ -59,55 +57,42 @@ type MapboxAnnotation = {|
   |},
 |};
 
+export type Props = {|
+  caseSearch?: CaseSearch,
+  style?: Object,
+  onTap?: ?() => mixed,
+  onSelectCaseId: (caseId: ?string) => mixed,
+  selectedCaseId: ?string,
+|};
+
+@inject('caseSearch')
 @observer
 export default class RecentRequestsMap extends Component {
+  props: Props;
+
   map: ?MapView;
 
-  @observable topLeftLat: number;
-  @observable topLeftLng: number;
-  @observable bottomRightLat: number;
-  @observable bottomRightLng: number;
-
-  mapSearchDisposer: ?Function;
-
-  @observable cases: SearchCase[] = [];
   @observable.shallow annotations: MapboxAnnotation[] = [];
-
-  componentWillMount() {}
+  updateAnnotationsDisposer: ?Function;
 
   componentDidMount() {
-    this.mapSearchDisposer = reaction(
-      () => ({
-        topLeft: {
-          lat: this.topLeftLat,
-          lng: this.topLeftLng,
-        },
-        bottomRight: {
-          lat: this.bottomRightLat,
-          lng: this.bottomRightLng,
-        },
-      }),
-      async ({ topLeft, bottomRight }) => {
-        const results = await searchCases(
-          fetchGraphql,
-          null,
-          topLeft,
-          bottomRight,
-        );
+    const { caseSearch } = this.props;
 
-        this.updateCases(results.cases);
-      },
-      {
-        name: 'map search',
-        compareStructural: true,
-        delay: 100,
-      },
-    );
+    if (caseSearch) {
+      this.updateAnnotationsDisposer = reaction(
+        () => caseSearch.cases,
+        this.updateAnnotations,
+        {
+          name: 'update annotations',
+          fireImmediately: true,
+        },
+      );
+    }
   }
 
   componentWillUnmount() {
-    if (this.mapSearchDisposer) {
-      this.mapSearchDisposer();
+    if (this.updateAnnotationsDisposer) {
+      this.updateAnnotationsDisposer();
     }
   }
 
@@ -131,10 +116,11 @@ export default class RecentRequestsMap extends Component {
     });
   };
 
-  // need to debounce all of this
   regionDidChange = async () => {
     const { map } = this;
-    if (!map) {
+    const { caseSearch } = this.props;
+
+    if (!map || !caseSearch) {
       return;
     }
 
@@ -146,14 +132,53 @@ export default class RecentRequestsMap extends Component {
     ] = await new Promise(resolve => map.getBounds(resolve));
 
     runInAction('getBounds response', () => {
-      this.topLeftLat = northEastLat;
-      this.topLeftLng = southWestLng;
-      this.bottomRightLat = southWestLat;
-      this.bottomRightLng = northEastLng;
+      caseSearch.topLeftLat = northEastLat;
+      caseSearch.topLeftLng = southWestLng;
+      caseSearch.bottomRightLat = southWestLat;
+      caseSearch.bottomRightLng = northEastLng;
     });
   };
 
-  updateCases = action((newCases: SearchCase[]) => {
+  annotationOpened = ({ id }: { id: string }) => {
+    const { onSelectCaseId } = this.props;
+    onSelectCaseId(id);
+  };
+
+  mapTapped = action('mapTapped', () => {
+    const { onSelectCaseId, onTap } = this.props;
+    if (onTap) {
+      onTap();
+    } else {
+      onSelectCaseId(null);
+    }
+  });
+
+  @computed
+  get annotationsWithSelection(): MapboxAnnotation[] {
+    const { caseSearch, selectedCaseId } = this.props;
+    const { annotations } = this;
+
+    if (!caseSearch) {
+      return annotations;
+    }
+
+    return annotations.map(
+      (a): any =>
+        a.id === selectedCaseId && a.annotationImage
+          ? {
+              ...a,
+              annotationImage: {
+                ...a.annotationImage,
+                source: {
+                  uri: a.annotationImage.source.uri.replace('empty', 'filled'),
+                },
+              },
+            }
+          : a,
+    );
+  }
+
+  updateAnnotations = (newCases: SearchCase[]) => {
     const newCaseIdSet: Set<string> = new Set();
     const oldCaseIdSet: Set<string> = new Set();
 
@@ -176,19 +201,19 @@ export default class RecentRequestsMap extends Component {
           annotationImage: {
             source: {
               uri: c.status === 'open'
-                ? 'green-empty-waypoint'
-                : 'orange-empty-waypoint',
+                ? 'orange-empty-waypoint'
+                : 'green-empty-waypoint',
             },
             width: 27,
             height: 44,
           },
         })),
     ];
-  });
+  };
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={StyleSheet.flatten([styles.container, this.props.style])}>
         <MapView
           ref={this.setMap}
           style={styles.map}
@@ -203,8 +228,12 @@ export default class RecentRequestsMap extends Component {
           showsUserLocation={false}
           styleURL={`mapbox://styles/${MAPBOX_STYLE_PATH}`}
           onRegionDidChange={this.regionDidChange}
+          onOpenAnnotation={this.annotationOpened}
+          onTap={this.mapTapped}
+          logoIsHidden={true}
           annotationsAreImmutable
-          annotations={this.annotations.slice()}
+          annotations={this.annotationsWithSelection.slice()}
+          attributionButtonIsHidden
         />
       </View>
     );
