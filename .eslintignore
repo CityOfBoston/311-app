@@ -1,1 +1,4 @@
 /flow-typed
+/node_modules
+/coverage
+/app/queries/graphql-types.js

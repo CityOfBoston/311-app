@@ -1,8 +1,33 @@
 {
-  "presets": ["babel-preset-expo"],
+  "plugins": [
+    "transform-decorators-legacy",
+    ["inline-import", {
+      "extensions": [
+        ".graphql",
+        ".env",
+        ".html"
+      ]
+    }]
+  ],
+
+  "presets": ["babel-preset-react-native-stage-0/decorator-support"],
+
   "env": {
     "development": {
-      "plugins": ["transform-react-jsx-source"]
+      "presets": ["react-native-dotenv"],
+      "plugins": [ "transform-react-jsx-source" ]
+    },
+    "test": {
+      "plugins": [
+        ["react-native-dotenv/babel-plugin-dotenv", {
+          "replacedModuleName": "react-native-dotenv",
+          "configDir": ".",
+          "filename": "env.sample"
+        }]
+      ]
+    },
+    "production": {
+      "presets": ["react-native-dotenv"]
     }
   }
 }

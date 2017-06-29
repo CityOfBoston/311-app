@@ -1,0 +1,42 @@
+mutation SubmitRequest(
+  $code: String!,
+  $description: String!,
+  $firstName: String,
+  $lastName: String,
+  $email: String,
+  $phone: String,
+  $address: String,
+  $addressId: String,
+  $location: LatLngIn,
+  $mediaUrl: String,
+  $attributes: [CreateRequestAttribute!]!) {
+  createRequest(
+    code: $code,
+    description: $description,
+    firstName: $firstName,
+    lastName: $lastName,
+    email: $email,
+    phone: $phone,
+    address: $address,
+    addressId: $addressId
+    location: $location,
+    attributes: $attributes,
+    mediaUrl: $mediaUrl
+  ) {
+    id
+    service {
+      name
+    }
+    status
+    statusNotes
+    description
+    address
+    location {
+      lat
+      lng
+    }
+    mediaUrl
+    requestedAtString(format: "MMMM D, YYYY, h:mm A")
+    updatedAtString(format: "MMMM D, YYYY, h:mm A")
+  }
+}
