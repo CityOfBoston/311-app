@@ -29,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "color": "^1.0.3",
+    "color": "^2.0.0",
     "mobx": "^3.1.15",
     "mobx-react": "^4.2.1",
     "mobx-utils": "^2.0.2",
