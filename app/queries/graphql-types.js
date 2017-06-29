@@ -50,6 +50,30 @@ export type CreateRequestAttribute = {|
   value: string,
 |};
 
+export type LoadCaseQueryVariables = {|
+  id: string,
+|};
+
+export type LoadCaseQuery = {|
+  case: ? {|
+    id: string,
+    service: {|
+      name: string,
+    |},
+    status: string,
+    statusNotes: ?string,
+    description: ?string,
+    address: ?string,
+    location: ? {|
+      lat: number,
+      lng: number,
+    |},
+    mediaUrl: ?string,
+    requestedAtString: string,
+    updatedAtString: string,
+  |},
+|};
+
 export type LoadServiceQueryVariables = {|
   code: string,
 |};

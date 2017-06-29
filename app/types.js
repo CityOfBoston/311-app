@@ -1,6 +1,7 @@
 // @flow
 
 import type {
+  LoadCaseQuery,
   LoadServiceQuery,
   LoadServiceSuggestionsQuery,
   SearchCasesQuery,
@@ -39,6 +40,8 @@ export type CalculatedAttribute = {
     name: string,
   }>,
 };
+
+export type Case = $NonMaybeType<$PropertyType<LoadCaseQuery, 'case'>>;
 
 export type SubmittedRequest = $PropertyType<
   SubmitRequestMutation,
