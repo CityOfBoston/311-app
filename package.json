@@ -15,45 +15,59 @@
     "prepush": "flow --quiet && node node_modules/jest/bin/jest.js --silent --no-cache --noStackTrace --lastCommit"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "/!node_modules\\/react-router-native/"
+    ]
   },
   "lint-staged": {
     "*.js": "eslint --quiet"
   },
+  "rnpm": {
+    "assets": [
+      "assets"
+    ]
+  },
   "dependencies": {
+    "color": "^1.0.3",
     "mobx": "^3.1.15",
     "mobx-react": "^4.2.1",
     "mobx-utils": "^2.0.2",
     "react": "16.0.0-alpha.6",
     "react-native": "^0.44",
+    "react-native-linear-gradient": "^2.0.0",
     "react-native-mapbox-gl": "mapbox/react-native-mapbox-gl",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-native-material-ui": "^1.12.0",
+    "react-native-status-bar-size": "^0.3.2",
+    "react-native-vector-icons": "^4.2.0",
+    "react-navigation": "^1.0.0-beta.11",
+    "react-router-native": "^4.1.1",
+    "react-transition-group": "^1.2.0"
   },
   "devDependencies": {
     "apollo-codegen": "^0.13.1",
     "babel-eslint": "^7.2.3",
     "babel-plugin-inline-import": "^2.0.5",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-expo": "^2.0.0",
+    "babel-preset-react-native-stage-0": "^1.0.1",
     "codecov": "^2.2.0",
     "del": "^3.0.0",
-    "dotenv": "^4.0.0",
+    "dotenv": "^2.0.0",
     "eslint": "^3",
     "eslint-config-prettier": "^2.1.1",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-react-native": "^2.3.2",
     "flow-bin": "^0.42.0",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.3.0",
-    "husky": "^0.14.0",
-    "jest-expo": "~1.0.1",
-    "lint-staged": "^3.6.1",
+    "husky": "^0.13.4",
+    "lint-staged": "^4.0.0",
+    "jest": "^20.0.4",
     "prettier": "^1.4.4",
-    "react-native-dotenv": "^0.0.4",
+    "react-native-dotenv": "zetachang/react-native-dotenv",
     "react-test-renderer": "16.0.0-alpha.6"
   }
 }
