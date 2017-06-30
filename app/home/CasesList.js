@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, FlatList, StyleSheet, Text, View } from 'react-native';
 import { ListItem } from 'react-native-material-ui';
 import { withRouter } from 'react-router-native';
 
@@ -83,12 +83,17 @@ export type Props = {|
 export default class CasesList extends React.Component {
   props: Props;
 
+  caseKeyExtractor = (c: SearchCase) => c.id;
+
   render() {
     const { searchCases, style } = this.props;
     return (
-      <ScrollView style={style}>
-        {searchCases.map(c => <CasesListItem searchCase={c} key={c.id} />)}
-      </ScrollView>
+      <FlatList
+        data={searchCases}
+        renderItem={({ item }) => <CasesListItem searchCase={item} />}
+        keyExtractor={this.caseKeyExtractor}
+        style={style}
+      />
     );
   }
 }

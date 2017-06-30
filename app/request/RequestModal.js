@@ -8,7 +8,6 @@ import type Request from '../store/Request';
 
 import PhotoScreen from './PhotoScreen';
 import DescriptionScreen from './DescriptionScreen';
-import ChooseServiceScreen from './ChooseServiceScreen';
 import QuestionsScreen from './QuestionsScreen';
 import SubmitRequestScreen from './SubmitRequestScreen';
 
@@ -46,7 +45,6 @@ export default StackNavigator(
   {
     Photo: { screen: PhotoScreen },
     Description: { screen: DescriptionScreen },
-    ChooseService: { screen: ChooseServiceScreen },
     Questions: { screen: QuestionsScreen },
     SubmitRequest: { screen: SubmitRequestScreen },
   },
