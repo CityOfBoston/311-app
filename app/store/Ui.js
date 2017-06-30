@@ -1,6 +1,6 @@
 // @flow
 
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { Dimensions } from 'react-native';
 import StatusBarSizeIOS from 'react-native-status-bar-size';
 
@@ -32,4 +32,9 @@ export default class Ui {
     this.windowWidth = width;
     this.windowHeight = height;
   });
+
+  @computed
+  get toolbarHeight(): number {
+    return 56 + this.statusBarHeight;
+  }
 }

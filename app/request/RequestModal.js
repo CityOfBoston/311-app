@@ -52,5 +52,6 @@ export default StackNavigator(
   },
   {
     initialRouteName: 'Photo',
+    headerMode: 'none',
   },
 );

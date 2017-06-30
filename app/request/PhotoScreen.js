@@ -1,47 +1,127 @@
 // @flow
 
 import React from 'react';
-import { Button, View, StyleSheet } from 'react-native';
-import { runInAction } from 'mobx';
+import {
+  Button,
+  Image,
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { runInAction, observable, action } from 'mobx';
+import { observer, inject } from 'mobx-react/native';
+import Camera from 'react-native-camera';
+import { Toolbar } from 'react-native-material-ui';
+import LinearGradient from 'react-native-linear-gradient';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import type Ui from '../store/Ui';
+import type CameraRoll from '../store/CameraRoll';
 import type { RequestNavigationProps } from './RequestModal';
-import CloseButton from '../common/CloseButton';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#c0ffee',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'space-around',
     flexDirection: 'column',
+    backgroundColor: 'transparent',
+  },
+  camera: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  fullImage: {
+    width: '100%',
+    height: '100%',
+  },
+  controls: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  thumbnail: {
+    width: 78,
+    height: 78,
+    margin: 8,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, .79)',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
 });
 
+type ImageSource = {
+  uri: string,
+  width: number,
+  height: number,
+};
+
+@inject('ui', 'cameraRoll')
+@observer
 export default class PhotoScreen extends React.Component {
   props: {
     ...RequestNavigationProps,
+    cameraRoll: CameraRoll,
+    ui: Ui,
   };
 
-  static navigationOptions = ({ screenProps }: RequestNavigationProps) => {
-    return {
-      title: 'Choose a Photo',
-      headerLeft: <CloseButton actionFunc={screenProps.closeModalFunc} />,
-    };
+  camera: ?Camera = null;
+  @observable.shallow selectedImageSource: ?ImageSource = null;
+  @observable capturing: boolean = false;
+
+  componentDidMount() {
+    const { cameraRoll } = this.props;
+    cameraRoll.attach();
+  }
+
+  componentWillUnmount() {
+    const { cameraRoll } = this.props;
+    cameraRoll.detach();
+  }
+
+  setCamera = (camera: ?Camera) => {
+    this.camera = camera;
   };
 
-  pickFromLibrary = async () => {
-    const { request } = this.props.screenProps;
+  takePhoto = action(async () => {
+    const { camera } = this;
+    const { cameraRoll } = this.props;
 
-    const out = {};
-    runInAction(() => {
-      if (!out.cancelled) {
-        request.localImageUris.push(out.uri);
-        this.advance();
-      }
-    });
-  };
+    if (!camera) {
+      return;
+    }
 
-  pickFromCamera = () => {};
+    this.capturing = true;
+
+    try {
+      const capturedPhoto = await camera.capture();
+      const size = await new Promise((resolve, reject) => {
+        Image.getSize(
+          capturedPhoto.path,
+          (width, height) => resolve({ width, height }),
+          reject,
+        );
+      });
+
+      runInAction(() => {
+        this.selectedImageSource = {
+          uri: capturedPhoto.path,
+          ...size,
+        };
+      });
+
+      cameraRoll.loadPhotos();
+    } finally {
+      runInAction(() => {
+        this.capturing = false;
+      });
+    }
+  });
 
   advance = () => {
     const { navigate } = this.props.navigation;
@@ -49,11 +129,92 @@ export default class PhotoScreen extends React.Component {
   };
 
   render() {
+    const { selectedImageSource, capturing } = this;
+    const { ui, screenProps, cameraRoll } = this.props;
+    const { statusBarHeight, toolbarHeight } = ui;
+
     return (
       <View style={styles.container}>
-        <Button title="From Library" onPress={this.pickFromLibrary} />
-        <Button title="From Camera" onPress={this.pickFromCamera} />
-        <Button title="No Photo" onPress={this.advance} />
+        {selectedImageSource
+          ? <Image style={styles.fullImage} source={selectedImageSource} />
+          : <Camera
+              ref={this.setCamera}
+              style={styles.camera}
+              aspect={Camera.constants.Aspect.fill}
+            />}
+
+        <LinearGradient
+          colors={['rgba(0, 0, 0, .4)', 'rgba(0, 0, 0, 0)']}
+          style={{
+            width: '100%',
+            position: 'absolute',
+            top: 0,
+            height: toolbarHeight,
+            backgroundColor: 'transparent',
+          }}
+        />
+
+        <Toolbar
+          leftElement="close"
+          onLeftElementPress={screenProps.closeModalFunc}
+          centerElement={''}
+          rightElement="arrow-forward"
+          style={{
+            container: {
+              position: 'absolute',
+              top: 0,
+              width: '100%',
+              paddingTop: statusBarHeight,
+              height: toolbarHeight,
+              backgroundColor: 'transparent',
+            },
+          }}
+        />
+
+        <View style={styles.controls}>
+          {!selectedImageSource &&
+            !capturing &&
+            <Button title="Shutter" onPress={this.takePhoto} />}
+
+          <View>
+            <LinearGradient
+              colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, .4)']}
+              style={{
+                width: '100%',
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                backgroundColor: 'transparent',
+              }}
+            />
+
+            <ScrollView style={styles.thumbnails} horizontal>
+              <TouchableOpacity
+                style={styles.thumbnail}
+                onPress={action(() => {
+                  this.selectedImageSource = null;
+                })}>
+                <MaterialIcon
+                  name="photo-camera"
+                  size={64}
+                  color="rgba(255, 255, 255, .79)"
+                />
+              </TouchableOpacity>
+
+              {cameraRoll.photos.map(photo =>
+                <TouchableOpacity
+                  key={photo.image.uri}
+                  onPress={action(() => {
+                    // photo.image has getter/setters, so we make it its own object
+                    // to work with Image props later.
+                    this.selectedImageSource = { ...photo.image };
+                  })}>
+                  <Image style={styles.thumbnail} source={photo.image} />
+                </TouchableOpacity>,
+              )}
+            </ScrollView>
+          </View>
+        </View>
       </View>
     );
   }
