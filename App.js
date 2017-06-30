@@ -17,6 +17,7 @@ import {
 import fetchGraphql from './app/fetch-graphql';
 
 import Ui from './app/store/Ui';
+import CameraRoll from './app/store/CameraRoll';
 import CaseSearch from './app/store/CaseSearch';
 
 import Routes from './app/Routes';
@@ -36,6 +37,7 @@ const UI_THEME = {
 export default class App extends React.Component {
   ui: Ui = new Ui();
   caseSearch: CaseSearch = new CaseSearch();
+  cameraRoll: CameraRoll = new CameraRoll();
 
   componentWillMount() {
     this.ui.attach();
@@ -51,7 +53,10 @@ export default class App extends React.Component {
     return (
       <NativeRouter>
         <ThemeProvider uiTheme={UI_THEME}>
-          <Provider ui={this.ui} caseSearch={this.caseSearch}>
+          <Provider
+            ui={this.ui}
+            caseSearch={this.caseSearch}
+            cameraRoll={this.cameraRoll}>
             <Routes />
           </Provider>
         </ThemeProvider>

@@ -364,17 +364,18 @@ export default class HomeScreen extends React.Component {
           animationType={'slide'}
           transparent={false}
           visible={modalVisible}>
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <RequestModal
-              screenProps={
-                ({
-                  closeModalFunc: this.closeModal,
-                  submitRequestFunc: this.submitRequest,
-                  request,
-                }: RequestScreenProps)
-              }
-            />
-          </KeyboardAvoidingView>
+          {modalVisible &&
+            <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+              <RequestModal
+                screenProps={
+                  ({
+                    closeModalFunc: this.closeModal,
+                    submitRequestFunc: this.submitRequest,
+                    request,
+                  }: RequestScreenProps)
+                }
+              />
+            </KeyboardAvoidingView>}
         </Modal>
 
       </View>

@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 
 export type Props = {|
   caseSearch?: CaseSearch,
-  ui?: Ui,
+  ui: Ui,
   match: any,
   location: any,
   history: any,
@@ -84,6 +84,10 @@ export type State = {|
 @inject('ui', 'caseSearch')
 @observer
 export default class CaseScreen extends React.Component {
+  static defaultProps = {
+    ui: (null: any),
+  };
+
   props: Props;
   state: State = {
     kase: null,
@@ -158,17 +162,6 @@ export default class CaseScreen extends React.Component {
   };
 
   @computed
-  get toolbarHeight(): number {
-    const { ui } = this.props;
-
-    if (!ui) {
-      return 56;
-    } else {
-      return 56 + ui.statusBarHeight;
-    }
-  }
-
-  @computed
   get imageHeight(): number {
     const { ui } = this.props;
 
@@ -197,7 +190,8 @@ export default class CaseScreen extends React.Component {
 
   @computed
   get fullScreenTop(): number {
-    return this.imageHeight - this.toolbarHeight + this.bannerHeight;
+    const { ui } = this.props;
+    return this.imageHeight - ui.toolbarHeight + this.bannerHeight;
   }
 
   render() {
@@ -207,7 +201,7 @@ export default class CaseScreen extends React.Component {
     if (!ui || !history) {
       return null;
     }
-    const { statusBarHeight, windowHeight } = ui;
+    const { statusBarHeight, windowHeight, toolbarHeight } = ui;
     const { imageHeight, bannerHeight } = this;
 
     let backgroundColor;
@@ -236,7 +230,7 @@ export default class CaseScreen extends React.Component {
                 position: 'absolute',
                 width: '100%',
                 paddingTop: statusBarHeight,
-                height: this.toolbarHeight,
+                height: toolbarHeight,
                 backgroundColor: transparentToolbar
                   ? 'transparent'
                   : backgroundColor,
