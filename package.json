@@ -43,7 +43,7 @@
     "react-native-vector-icons": "^4.2.0",
     "react-navigation": "^1.0.0-beta.11",
     "react-router-native": "^4.1.1",
-    "react-transition-group": "^1.2.0"
+    "react-transition-group": "^2.0.1"
   },
   "devDependencies": {
     "apollo-codegen": "^0.13.1",
