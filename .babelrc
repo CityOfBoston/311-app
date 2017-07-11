@@ -19,7 +19,7 @@
     },
     "test": {
       "plugins": [
-        ["react-native-dotenv/babel-plugin-dotenv", {
+        ["babel-plugin-dotenv", {
           "replacedModuleName": "react-native-dotenv",
           "configDir": ".",
           "filename": "env.sample"

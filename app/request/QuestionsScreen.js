@@ -1,14 +1,14 @@
 // @flow
 
 import React from 'react';
-import { Button, ScrollView, StyleSheet } from 'react-native';
-import { observer } from 'mobx-react/native';
+import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { observer, inject } from 'mobx-react/native';
+import { Toolbar } from 'react-native-material-ui';
 
-import type {
-  RequestNavigationProps,
-  ChosenServiceParams,
-  SubmissionParams,
-} from './RequestModal';
+import type Ui from '../store/Ui';
+import type { RequestNavigationProps } from './RequestModal';
+
+import { SECONDARY_TEXT_COLOR } from '../common/style-constants';
 
 import AttributeField from './AttributeField';
 
@@ -16,65 +16,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#B1A5E5',
-    padding: 20,
   },
-  descriptionField: {
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    fontSize: 20,
-    padding: 20,
-    height: '50%',
-    marginTop: 10,
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  imageThumb: {
-    width: 64,
-    height: 64,
-    marginLeft: 5,
-    marginRight: 5,
+  descriptionText: {
+    color: SECONDARY_TEXT_COLOR,
+    fontSize: 18,
   },
 });
 
-const NextButton = observer(
-  ({
-    navigation: { navigate },
-    screenProps: { request, submitRequestFunc },
-  }: RequestNavigationProps) =>
-    <Button
-      title="Submit"
-      disabled={!request.questionRequirementsMet}
-      onPress={() => {
-        const submitRequestResult = submitRequestFunc();
-        navigate('SubmitRequest', ({ submitRequestResult }: SubmissionParams));
-      }}
-    />,
-);
-
+@inject('ui')
 @observer
 export default class QuestionsScreen extends React.Component {
-  props: RequestNavigationProps;
-
-  static navigationOptions = (props: RequestNavigationProps) => {
-    const { service } = (props.navigation.state.params: ChosenServiceParams);
-    return {
-      title: service.name,
-      headerRight: <NextButton {...props} />,
-    };
+  props: {
+    ...RequestNavigationProps,
+    ui: Ui,
   };
 
   render() {
-    const { request } = this.props.screenProps;
+    const {
+      ui,
+      screenProps: { request, closeModalFunc },
+      navigation: { state: { params: { service } } },
+    } = this.props;
+    const { statusBarHeight, toolbarHeight } = ui;
 
     return (
-      <ScrollView style={styles.container}>
-        {request.questions.map(q =>
-          <AttributeField key={q.code} question={q} />,
-        )}
-      </ScrollView>
+      <View style={styles.container}>
+        <Toolbar
+          leftElement="close"
+          onLeftElementPress={closeModalFunc}
+          centerElement={service.name}
+          style={{
+            container: {
+              paddingTop: statusBarHeight,
+              height: toolbarHeight,
+            },
+          }}
+        />
+
+        <ScrollView style={{ flex: 1, padding: 16 }}>
+          <Text style={styles.descriptionText}>{service.description}</Text>
+          {request.questions.map(q =>
+            <AttributeField key={q.code} question={q} />,
+          )}
+        </ScrollView>
+      </View>
     );
   }
 }
