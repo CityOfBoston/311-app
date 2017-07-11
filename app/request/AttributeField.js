@@ -286,7 +286,7 @@ export default class AttributeField extends React.Component {
 
     switch (question.type) {
       case 'BOOLEAN_CHECKBOX':
-        return renderCheckbox(question, this.onCheckbox);
+        return renderCheckbox();
       case 'INFORMATIONAL':
         return renderInformationalAttribute(question);
       case 'DATETIME':

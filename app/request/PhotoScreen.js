@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
   },
+  thumbnails: {},
   thumbnail: {
     width: 78,
     height: 78,

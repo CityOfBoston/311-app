@@ -24,14 +24,13 @@
 .*/node_modules/xdl/build/*
 .*/node_modules/reqwest/tests/*
 
-; Ignore missing expo-sdk dependencies (temporarily)
-; https://github.com/expo/expo/issues/162
-.*/node_modules/expo/src/*
-
 ; Ignore react-native-fbads dependency of the expo sdk
 .*/node_modules/react-native-fbads/*
 
 .*/node_modules/react-native-status-bar-size/*
+.*/node_modules/react-native-linear-gradient/*
+.*/node_modules/react-native-tab-view/*
+.*/node_modules/react-navigation/*
 
 [libs]
 node_modules/react-native/Libraries/react-native/react-native-interface.js
@@ -67,4 +66,4 @@ module.file_ext=.js
 module.file_ext=.json 
 
 [version]
-^0.42.0
+^0.49.1
