@@ -7,8 +7,8 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 type ChildProps = {|
   transitionStyle?: ?(val: Animated.Value, leaving: boolean) => any,
   runOnMount?: boolean,
-  duration?: ?number,
-  useNativeDriver?: ?boolean,
+  duration?: number,
+  useNativeDriver?: boolean,
   children?: any,
 |};
 
@@ -26,6 +26,7 @@ class ViewTransitionGroupAnimateChild extends React.Component {
 
   static defaultProps = {
     duration: 250,
+    useNativeDriver: false,
   };
 
   componentWillAppear(doneFn) {
@@ -40,7 +41,7 @@ class ViewTransitionGroupAnimateChild extends React.Component {
     if (runOnMount) {
       Animated.timing(val, {
         toValue: 1,
-        duration,
+        duration: duration,
         useNativeDriver,
       }).start();
     } else {
