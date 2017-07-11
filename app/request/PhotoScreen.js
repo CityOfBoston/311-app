@@ -137,13 +137,7 @@ export default class PhotoScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        {selectedImageSource
-          ? <Image style={styles.fullImage} source={selectedImageSource} />
-          : <Camera
-              ref={this.setCamera}
-              style={styles.camera}
-              aspect={Camera.constants.Aspect.fill}
-            />}
+        {this.renderImage()}
 
         <LinearGradient
           colors={['rgba(0, 0, 0, .4)', 'rgba(0, 0, 0, 0)']}
@@ -220,5 +214,20 @@ export default class PhotoScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  renderImage() {
+    const { selectedImageSource } = this;
+    if (selectedImageSource) {
+      return <Image style={styles.fullImage} source={selectedImageSource} />;
+    } else {
+      return (
+        <Camera
+          ref={this.setCamera}
+          style={styles.camera}
+          aspect={Camera.constants.Aspect.fill}
+        />
+      );
+    }
   }
 }
