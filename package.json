@@ -8,11 +8,13 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "node node_modules/jest/bin/jest.js --watch",
-    "test-ci": "node node_modules/jest/bin/jest.js --coverage --runInBand",
+    "test": "rnstl && jest --watch",
+    "test-ci": "rnstl && jest --coverage --runInBand",
     "lint": "eslint --fix .",
     "precommit": "lint-staged",
-    "prepush": "flow --quiet && node node_modules/jest/bin/jest.js --silent --no-cache --noStackTrace --lastCommit"
+    "prepush": "flow --quiet && jest --silent --no-cache --noStackTrace --lastCommit",
+    "prestorybook": "rnstl",
+    "storybook": "storybook start -p 7007"
   },
   "jest": {
     "preset": "react-native",
@@ -27,6 +29,15 @@
     "assets": [
       "assets"
     ]
+  },
+  "config": {
+    "react-native-storybook-loader": {
+      "searchDir": [
+        "./app"
+      ],
+      "pattern": "**/*.stories.js",
+      "outputFile": "./storybook/storyLoader.js"
+    }
   },
   "dependencies": {
     "color": "^2.0.0",
@@ -46,6 +57,9 @@
     "react-transition-group": "^1.2.0"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.1.8",
+    "@storybook/addon-storyshots": "^3.1.8",
+    "@storybook/react-native": "^3.1.8",
     "apollo-codegen": "^0.14.3",
     "babel-eslint": "^7.2.3",
     "babel-plugin-inline-import": "^2.0.5",
@@ -68,7 +82,9 @@
     "jest": "^20.0.4",
     "lint-staged": "^4.0.0",
     "prettier": "^1.4.4",
+    "react-dom": "16.0.0-alpha.12",
     "react-native-dotenv": "^0.1.0",
+    "react-native-storybook-loader": "^1.4.1",
     "react-test-renderer": "16.0.0-alpha.12"
   }
 }

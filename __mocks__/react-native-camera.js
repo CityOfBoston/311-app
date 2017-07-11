@@ -1,12 +1,17 @@
 // @flow
 
 import React from 'react';
-import { View } from 'react-native';
 
 export default class Camera extends React.Component {
+  static constants = {
+    Aspect: {
+      fill: 'fill',
+    },
+  };
+
   capture = jest.fn();
 
   render() {
-    return <View />;
+    return React.createElement('Camera', this.props);
   }
 }
