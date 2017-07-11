@@ -100,9 +100,9 @@ anymatch@^1.3.0:
     arrify "^1.0.0"
     micromatch "^2.1.5"
 
-apollo-codegen@^0.13.1:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/apollo-codegen/-/apollo-codegen-0.13.2.tgz#091e34ad86559cc77022f8b263ae5c77f3f66b19"
+apollo-codegen@^0.14.3:
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/apollo-codegen/-/apollo-codegen-0.14.3.tgz#1c4b23fe72f97c03f34da13d4612cc8594f876f8"
   dependencies:
     change-case "^3.0.0"
     core-js "^2.4.1"
@@ -111,6 +111,7 @@ apollo-codegen@^0.13.1:
     inflected "^2.0.2"
     mkdirp "^0.5.1"
     node-fetch "^1.5.3"
+    sjcl "^1.0.6"
     source-map-support "^0.4.15"
     yargs "^8.0.1"
 
@@ -5200,6 +5201,10 @@ simple-swizzle@^0.2.2:
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
   dependencies:
     is-arrayish "^0.3.1"
+
+sjcl@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/sjcl/-/sjcl-1.0.7.tgz#32b365a50dc9bba26b88ba3c9df8ea34217d9f45"
 
 slash@^1.0.0:
   version "1.0.0"
