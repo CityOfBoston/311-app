@@ -10,7 +10,6 @@
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
-		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* bos311Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* bos311Tests.m */; };
 		05C93F10BB9646D6B27280D5 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 008FD57564FF46578A961BBF /* Zocial.ttf */; };
@@ -37,8 +36,9 @@
 		611217B9BB0A4DE0A23DDDA6 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E861A33275D4E22946E4565 /* Foundation.ttf */; };
 		652067AA3A264218ADF742BB /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3685623D30D04205BD9ED393 /* Roboto-Light.ttf */; };
 		7394454B1F0580A2002E366C /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7394454A1F057F04002E366C /* libRCTCameraRoll.a */; };
-		73F7382E1EFAB2A700F249FC /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73F7382D1EFAB2A700F249FC /* Mapbox.framework */; };
-		73F7382F1EFAB2A700F249FC /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73F7382D1EFAB2A700F249FC /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		739445CC1F166660002E366C /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
+		739446361F1669C6002E366C /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739446351F1669C6002E366C /* Mapbox.framework */; };
+		739446371F166A7B002E366C /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 739446351F1669C6002E366C /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7BC72A918FDF4498BCA190E5 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 609E1991A30644DBB53F853F /* Roboto-Italic.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9134A2BD84EF4DF098EC998C /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A267830969E740B28995E5BF /* Roboto-Medium.ttf */; };
@@ -317,7 +317,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				73F7382F1EFAB2A700F249FC /* Mapbox.framework in Embed Frameworks */,
+				739446371F166A7B002E366C /* Mapbox.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,7 +359,7 @@
 		630FC21B890248FBAECCD8EA /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BoldItalic.ttf"; path = "../assets/fonts/Roboto/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		6B27C88B5E324E1A874DDD46 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		739445451F057F04002E366C /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
-		73F7382D1EFAB2A700F249FC /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		739446351F1669C6002E366C /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		7648A305027345D9BE8F8D3C /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -394,15 +394,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				739445CC1F166660002E366C /* libRCTNetwork.a in Frameworks */,
 				7394454B1F0580A2002E366C /* libRCTCameraRoll.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
+				739446361F1669C6002E366C /* Mapbox.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
-				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
-				73F7382E1EFAB2A700F249FC /* Mapbox.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -593,7 +593,7 @@
 		73F737D11EF9596100F249FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				73F7382D1EFAB2A700F249FC /* Mapbox.framework */,
+				739446351F1669C6002E366C /* Mapbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1264,6 +1264,13 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios",
+				);
+				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
