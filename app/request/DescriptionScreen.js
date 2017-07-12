@@ -11,27 +11,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { action, reaction, observable, runInAction } from 'mobx';
-import { observer, inject } from 'mobx-react/native';
-import { fromPromise } from 'mobx-utils';
+import { action } from 'mobx';
+import { observer } from 'mobx-react/native';
 import type { IPromiseBasedObservable } from 'mobx-utils';
 import { Toolbar } from 'react-native-material-ui';
 
 import ViewTransitionGroup from '../common/ViewTransitionGroup';
 
 import type { ServiceSummary } from '../types';
-import Question from '../store/Question';
-import fetchGraphql from '../fetch-graphql';
-import loadServiceSuggestions from '../queries/load-service-suggestions';
-import loadService from '../queries/load-service';
 
 import type Ui from '../store/Ui';
-import type {
-  RequestNavigationProps,
-  ChosenServiceParams,
-} from './RequestModal';
 
 import { YELLOW, SECONDARY_TEXT_COLOR } from '../common/style-constants';
+
+const AnimatedView = Animated.View;
 
 const styles = StyleSheet.create({
   container: {
@@ -62,68 +55,30 @@ const styles = StyleSheet.create({
   },
 });
 
-@inject('ui')
 @observer
 export default class DescriptionScreen extends React.Component {
   props: {
-    ...RequestNavigationProps,
     ui: Ui,
+    request: Request,
+    serviceSuggestionsObservable: ?IPromiseBasedObservable<ServiceSummary[]>,
+    closeModalFunc: () => mixed,
+    chooseServiceFunc: (code: string) => mixed,
   };
 
-  @observable
-  serviceSummaries: ?IPromiseBasedObservable<Array<ServiceSummary>> = null;
-  serviceSummariesDisposer: ?Function;
-
-  componentDidMount() {
-    this.serviceSummariesDisposer = reaction(
-      () => this.props.screenProps.request.description,
-      (description: string) => {
-        if (description) {
-          this.serviceSummaries = fromPromise(
-            loadServiceSuggestions(fetchGraphql, description),
-          );
-        } else {
-          this.serviceSummaries = null;
-        }
-      },
-      {
-        fireImmediately: true,
-        delay: 250,
-      },
-    );
-  }
-
-  componentWillUnmount() {
-    if (this.serviceSummariesDisposer) {
-      this.serviceSummariesDisposer();
-    }
-  }
-
   descriptionTextChanged = action((description: string) => {
-    const { screenProps: { request } } = this.props;
+    const { request } = this.props;
     request.description = description;
   });
 
-  chooseService = async (code: string) => {
-    const { request } = this.props.screenProps;
-    const { navigate } = this.props.navigation;
-
-    const service = await loadService(fetchGraphql, code);
-    if (!service) {
-      return;
-    }
-
-    runInAction(() => {
-      request.serviceCode = code;
-      request.questions = Question.buildQuestions(service.attributes);
-      navigate('Questions', ({ service }: ChosenServiceParams));
-    });
-  };
-
   render() {
-    const { ui, screenProps: { request, closeModalFunc } } = this.props;
+    const {
+      ui,
+      request,
+      closeModalFunc,
+      chooseServiceFunc,
+      serviceSuggestionsObservable,
+    } = this.props;
     const { statusBarHeight, toolbarHeight } = ui;
-    const { serviceSummaries } = this;
 
     return (
       <View style={styles.container}>
@@ -142,13 +97,13 @@ export default class DescriptionScreen extends React.Component {
         <TextInput
           style={styles.descriptionField}
           multiline={true}
-          autoFocus={true}
+          autoFocus={process.env.NODE_ENV !== 'test'}
           value={request.description}
           onChangeText={this.descriptionTextChanged}
         />
 
         <ViewTransitionGroup>
-          {serviceSummaries &&
+          {serviceSuggestionsObservable &&
             <ViewTransitionGroup.Animate
               key="view"
               transitionStyle={(val: Animated.Value) => ({
@@ -157,7 +112,7 @@ export default class DescriptionScreen extends React.Component {
                   outputRange: [0, 72],
                 }),
               })}>
-              <Animated.View style={styles.servicesRow}>
+              <AnimatedView style={styles.servicesRow}>
                 <View
                   style={{
                     marginTop: 8,
@@ -168,10 +123,10 @@ export default class DescriptionScreen extends React.Component {
                   </Text>
                 </View>
 
-                {serviceSummaries.state === 'pending' &&
+                {serviceSuggestionsObservable.state === 'pending' &&
                   <ActivityIndicator style={{ flex: 1 }} />}
 
-                {serviceSummaries.state === 'fulfilled' &&
+                {serviceSuggestionsObservable.state === 'fulfilled' &&
                   <ScrollView horizontal keyboardShouldPersistTaps="always">
                     <View
                       style={{
@@ -180,12 +135,12 @@ export default class DescriptionScreen extends React.Component {
                         flexDirection: 'row',
                         padding: 8,
                       }}>
-                      {serviceSummaries.value.map(service =>
+                      {serviceSuggestionsObservable.value.map(service =>
                         <TouchableOpacity
                           key={service.code}
                           style={styles.serviceButton}
                           onPress={() => {
-                            this.chooseService(service.code);
+                            chooseServiceFunc(service.code);
                           }}>
                           <Text style={{ fontSize: 18, color: YELLOW }}>
                             {service.name}
@@ -194,7 +149,7 @@ export default class DescriptionScreen extends React.Component {
                       )}
                     </View>
                   </ScrollView>}
-              </Animated.View>
+              </AnimatedView>
             </ViewTransitionGroup.Animate>}
         </ViewTransitionGroup>
 
