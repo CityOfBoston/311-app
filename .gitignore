@@ -5,3 +5,4 @@ coverage
 .DS_store
 xcuserdata
 .env
+storybook/storyLoader.js

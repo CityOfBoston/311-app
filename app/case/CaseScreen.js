@@ -3,7 +3,7 @@
 import React from 'react';
 import {
   Animated,
-  Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   View,
@@ -252,7 +252,7 @@ export default class CaseScreen extends React.Component {
 
           {!miniView &&
             <BottomSheet>
-              <Image
+              <ImageBackground
                 style={{ width: '100%', height: imageHeight }}
                 source={kase && kase.mediaUrl ? { uri: kase.mediaUrl } : null}
                 defaultSource={{ uri: '311-watermark' }}>
@@ -265,7 +265,7 @@ export default class CaseScreen extends React.Component {
                   }}
                 />
 
-              </Image>
+              </ImageBackground>
             </BottomSheet>}
 
           <BottomSheet style={styles.caseContent}>

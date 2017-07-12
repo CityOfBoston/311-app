@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'space-around',
     flexDirection: 'column',
-    backgroundColor: 'transparent',
+    backgroundColor: 'black',
   },
   camera: {
     flex: 1,
@@ -42,7 +42,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
+    backgroundColor: 'transparent',
   },
+  thumbnails: {},
   thumbnail: {
     width: 78,
     height: 78,
@@ -135,13 +137,7 @@ export default class PhotoScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        {selectedImageSource
-          ? <Image style={styles.fullImage} source={selectedImageSource} />
-          : <Camera
-              ref={this.setCamera}
-              style={styles.camera}
-              aspect={Camera.constants.Aspect.fill}
-            />}
+        {this.renderImage()}
 
         <LinearGradient
           colors={['rgba(0, 0, 0, .4)', 'rgba(0, 0, 0, 0)']}
@@ -157,8 +153,9 @@ export default class PhotoScreen extends React.Component {
         <Toolbar
           leftElement="close"
           onLeftElementPress={screenProps.closeModalFunc}
-          centerElement={''}
+          centerElement={'Choose a Photo'}
           rightElement="arrow-forward"
+          onRightElementPress={this.advance}
           style={{
             container: {
               position: 'absolute',
@@ -217,5 +214,20 @@ export default class PhotoScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  renderImage() {
+    const { selectedImageSource } = this;
+    if (selectedImageSource) {
+      return <Image style={styles.fullImage} source={selectedImageSource} />;
+    } else {
+      return (
+        <Camera
+          ref={this.setCamera}
+          style={styles.camera}
+          aspect={Camera.constants.Aspect.fill}
+        />
+      );
+    }
   }
 }

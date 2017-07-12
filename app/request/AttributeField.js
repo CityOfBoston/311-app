@@ -8,11 +8,23 @@ import { observer } from 'mobx-react/native';
 
 import type Question from '../store/Question';
 
+import { CHARLES_BLUE, SECONDARY_TEXT_COLOR } from '../common/style-constants';
+
 export type Props = {|
   question: Question,
 |};
 
 const styles = StyleSheet.create({
+  question: {
+    marginTop: 24,
+  },
+  descriptionText: {
+    color: CHARLES_BLUE,
+    fontSize: 16,
+  },
+  requiredText: {
+    color: SECONDARY_TEXT_COLOR,
+  },
   stringField: {
     height: 30,
     backgroundColor: 'white',
@@ -51,9 +63,12 @@ export class SingleValueListAttributeField extends React.Component {
     }
 
     return (
-      <View>
-        <Text>
-          {question.description} {maybeRenderRequired(question.required)}
+      <View style={styles.question}>
+        <Text style={styles.descriptionText}>
+          {question.description}
+        </Text>
+        <Text style={styles.requiredText}>
+          {maybeRenderRequired(question.required)}
         </Text>
 
         <Picker
@@ -271,7 +286,7 @@ export default class AttributeField extends React.Component {
 
     switch (question.type) {
       case 'BOOLEAN_CHECKBOX':
-        return renderCheckbox(question, this.onCheckbox);
+        return renderCheckbox();
       case 'INFORMATIONAL':
         return renderInformationalAttribute(question);
       case 'DATETIME':

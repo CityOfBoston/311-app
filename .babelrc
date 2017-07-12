@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "transform-decorators-legacy",
     ["inline-import", {
       "extensions": [
         ".graphql",
@@ -15,11 +14,11 @@
   "env": {
     "development": {
       "presets": ["react-native-dotenv"],
-      "plugins": [ "transform-react-jsx-source" ]
+      "plugins": ["transform-react-jsx-source"]
     },
     "test": {
       "plugins": [
-        ["react-native-dotenv/babel-plugin-dotenv", {
+        ["babel-plugin-dotenv", {
           "replacedModuleName": "react-native-dotenv",
           "configDir": ".",
           "filename": "env.sample"

@@ -11,3 +11,13 @@ export const CHARLES_BLUE = '#091f2f';
 export const PRIMARY_TEXT_COLOR = Color(CHARLES_BLUE).alpha(0.87).toString();
 export const SECONDARY_TEXT_COLOR = Color(CHARLES_BLUE).alpha(0.54).toString();
 export const DISABLED_TEXT_COLOR = Color(CHARLES_BLUE).alpha(0.38).toString();
+
+export const UI_THEME = {
+  palette: {
+    primaryColor: YELLOW,
+    accentColor: OPTIMISTIC_BLUE,
+    primaryTextColor: PRIMARY_TEXT_COLOR,
+    secondaryTextColor: SECONDARY_TEXT_COLOR,
+    disabledTextColor: DISABLED_TEXT_COLOR,
+  },
+};
