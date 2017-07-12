@@ -107,6 +107,10 @@ export default class ViewTransitionGroup extends React.Component {
   static Animate = ViewTransitionGroupAnimateChild;
 
   render() {
-    return <TransitionGroup component={View} {...this.props} />;
+    if (process.env.NODE_ENV === 'test') {
+      return <View>{this.props.children}</View>;
+    } else {
+      return <TransitionGroup component={View} {...this.props} />;
+    }
   }
 }

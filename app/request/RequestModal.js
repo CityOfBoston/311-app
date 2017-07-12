@@ -7,7 +7,7 @@ import type { Service, SubmittedRequest } from '../types';
 import type Request from '../store/Request';
 
 import PhotoScreen from './PhotoScreen';
-import DescriptionScreen from './DescriptionScreen';
+import DescriptionScreenController from './DescriptionScreenController';
 import QuestionsScreen from './QuestionsScreen';
 import SubmitRequestScreen from './SubmitRequestScreen';
 
@@ -44,7 +44,7 @@ export type RequestNavigationProps = {|
 export default StackNavigator(
   {
     Photo: { screen: PhotoScreen },
-    Description: { screen: DescriptionScreen },
+    Description: { screen: DescriptionScreenController },
     Questions: { screen: QuestionsScreen },
     SubmitRequest: { screen: SubmitRequestScreen },
   },
