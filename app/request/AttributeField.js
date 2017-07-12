@@ -2,9 +2,20 @@
 /* eslint no-unused-vars: 0 */
 
 import React from 'react';
-import { Picker, StyleSheet, Text, TextInput, View } from 'react-native';
+import PropTypes from 'prop-types';
+import {
+  Animated,
+  Picker,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { action } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { Divider, ListItem, RadioButton } from 'react-native-material-ui';
+
+import ViewTransitionGroup from '../common/ViewTransitionGroup';
 
 import type Question from '../store/Question';
 
@@ -35,11 +46,41 @@ const styles = StyleSheet.create({
   textField: {
     height: 80,
     backgroundColor: 'white',
-    marginTop: 10,
-    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
     padding: 5,
   },
 });
+
+@observer
+class QuestionCenterElement extends React.Component {
+  static contextTypes = {
+    uiTheme: PropTypes.object.isRequired,
+  };
+
+  props: {
+    question: Question,
+  };
+
+  render() {
+    const { uiTheme } = this.context;
+    const { question: { description, required, value } } = this.props;
+
+    return (
+      <View>
+        <Text style={uiTheme.listItem.primaryText}>
+          {description}
+        </Text>
+        {value
+          ? <Text numberOfLines={1} style={uiTheme.listItem.secondaryText}>
+              {value}
+            </Text>
+          : required &&
+              <Text style={uiTheme.listItem.secondaryText}>Required</Text>}
+      </View>
+    );
+  }
+}
 
 @observer
 export class SingleValueListAttributeField extends React.Component {
@@ -47,42 +88,31 @@ export class SingleValueListAttributeField extends React.Component {
     question: Question,
   };
 
-  onValueChange = action((itemValue: string) => {
+  onValueChange = action((checked: boolean, itemValue: string) => {
     const { question } = this.props;
     question.value = itemValue === '--no-answer-key--' ? '' : itemValue;
   });
 
   render() {
     const { question } = this.props;
+    const { uiTheme } = this.context;
     const options = [...(question.valueOptions || [])];
 
-    if (question.required) {
-      options.unshift({ key: '', name: 'Please Choose One' });
-    } else {
+    if (!question.required) {
       options.push({ key: '', name: 'No Answer' });
     }
 
     return (
-      <View style={styles.question}>
-        <Text style={styles.descriptionText}>
-          {question.description}
-        </Text>
-        <Text style={styles.requiredText}>
-          {maybeRenderRequired(question.required)}
-        </Text>
-
-        <Picker
-          onValueChange={this.onValueChange}
-          selectedValue={question.value || '--no-answer-key--'}
-          prompt={question.description}>
-          {options.map(({ key, name }) =>
-            <Picker.Item
-              key={key}
-              label={name}
-              value={key || '--no-answer-key--'}
-            />,
-          )}
-        </Picker>
+      <View>
+        {options.map(({ key, name }) =>
+          <RadioButton
+            key={key}
+            value={key || '--no-answer-key--'}
+            label={name}
+            checked={key === question.value}
+            onCheck={this.onValueChange}
+          />,
+        )}
       </View>
     );
   }
@@ -152,34 +182,14 @@ function renderInformationalAttribute(question) {
 
 function renderTextAttribute(question, onChange) {
   return (
-    <View>
-      <Text>
-        {question.description} {maybeRenderRequired(question.required)}
-      </Text>
-      <TextInput
-        style={styles.textField}
-        name={question.code}
-        value={question.value}
-        onChange={onChange}
-        multiline={true}
-      />
-    </View>
-  );
-}
-
-function renderStringAttribute(question, onChange) {
-  return (
-    <View>
-      <Text>
-        {question.description} {maybeRenderRequired(question.required)}
-      </Text>
-      <TextInput
-        name={question.code}
-        value={question.value}
-        onChange={onChange}
-        style={styles.stringField}
-      />
-    </View>
+    <TextInput
+      style={styles.textField}
+      name={question.code}
+      defaultValue={`${question.value || ''}`}
+      onChangeText={onChange}
+      multiline={true}
+      autoFocus
+    />
   );
 }
 
@@ -245,10 +255,22 @@ function renderMultiValueListAttribute(question, onChange) {
 @observer
 export default class AttributeField extends React.Component {
   props: Props;
+  state: {
+    expanded: boolean,
+  };
 
-  onChange = action((ev: SyntheticInputEvent) => {
+  constructor(props: Props) {
+    super(props);
+
+    const { question } = props;
+
+    this.state = {
+      expanded: question.required,
+    };
+  }
+
+  onChange = action((value: string) => {
     const { question } = this.props;
-    const { value } = ev.target;
 
     if (question.type === 'NUMBER') {
       question.value = value.replace(/\D+/g, '');
@@ -281,7 +303,36 @@ export default class AttributeField extends React.Component {
     }
   });
 
+  toggleExpansion = () => {
+    const { expanded } = this.state;
+    this.setState({ expanded: !expanded });
+  };
+
   render() {
+    const { question } = this.props;
+    const { expanded } = this.state;
+
+    return (
+      <View>
+        <ListItem
+          numberOfLines="dynamic"
+          centerElement={<QuestionCenterElement question={question} />}
+          rightElement={expanded ? 'expand-less' : 'expand-more'}
+          onPress={this.toggleExpansion}
+          onRightElementPress={this.toggleExpansion}
+        />
+        <ViewTransitionGroup>
+          {expanded &&
+            <ViewTransitionGroup.Animate>
+              {this.renderExpanded()}
+            </ViewTransitionGroup.Animate>}
+        </ViewTransitionGroup>
+        <Divider />
+      </View>
+    );
+  }
+
+  renderExpanded() {
     const { question } = this.props;
 
     switch (question.type) {
@@ -293,11 +344,10 @@ export default class AttributeField extends React.Component {
       case 'DATE':
         return null;
       case 'STRING':
-        return renderStringAttribute(question, this.onChange);
-      case 'NUMBER':
-        return renderNumberAttribute(question, this.onChange);
       case 'TEXT':
         return renderTextAttribute(question, this.onChange);
+      case 'NUMBER':
+        return renderNumberAttribute(question, this.onChange);
       case 'SINGLEVALUELIST':
         return <SingleValueListAttributeField question={question} />;
       case 'MULTIVALUELIST':
