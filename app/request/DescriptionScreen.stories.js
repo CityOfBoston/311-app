@@ -5,8 +5,6 @@ import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
 import { fromPromise } from 'mobx-utils';
 
-import requestModalDecorator from './__storybook__/request-modal-decorator';
-
 import type { ServiceSummary } from '../types';
 
 import Ui from '../store/Ui';
@@ -60,7 +58,6 @@ function requestWithDescription() {
 }
 
 storiesOf('DescriptionScreen', module)
-  .addDecorator(requestModalDecorator)
   .add('no description', () =>
     <DescriptionScreen
       {...DEFAULT_PROPS}

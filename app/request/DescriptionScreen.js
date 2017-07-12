@@ -4,6 +4,7 @@ import React from 'react';
 import {
   ActivityIndicator,
   Animated,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -81,79 +82,81 @@ export default class DescriptionScreen extends React.Component {
     const { statusBarHeight, toolbarHeight } = ui;
 
     return (
-      <View style={styles.container}>
-        <Toolbar
-          leftElement="close"
-          onLeftElementPress={closeModalFunc}
-          centerElement={'Describe your issue'}
-          style={{
-            container: {
-              paddingTop: statusBarHeight,
-              height: toolbarHeight,
-            },
-          }}
-        />
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Toolbar
+            leftElement="close"
+            onLeftElementPress={closeModalFunc}
+            centerElement={'Describe your issue'}
+            style={{
+              container: {
+                paddingTop: statusBarHeight,
+                height: toolbarHeight,
+              },
+            }}
+          />
 
-        <TextInput
-          style={styles.descriptionField}
-          multiline={true}
-          autoFocus={process.env.NODE_ENV !== 'test'}
-          value={request.description}
-          onChangeText={this.descriptionTextChanged}
-        />
+          <TextInput
+            style={styles.descriptionField}
+            multiline={true}
+            autoFocus={process.env.NODE_ENV !== 'test'}
+            value={request.description}
+            onChangeText={this.descriptionTextChanged}
+          />
 
-        <ViewTransitionGroup>
-          {serviceSuggestionsObservable &&
-            <ViewTransitionGroup.Animate
-              key="view"
-              transitionStyle={(val: Animated.Value) => ({
-                height: val.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, 72],
-                }),
-              })}>
-              <AnimatedView style={styles.servicesRow}>
-                <View
-                  style={{
-                    marginTop: 8,
-                    marginLeft: 16,
-                  }}>
-                  <Text style={{ color: SECONDARY_TEXT_COLOR }}>
-                    How can we help?
-                  </Text>
-                </View>
+          <ViewTransitionGroup>
+            {serviceSuggestionsObservable &&
+              <ViewTransitionGroup.Animate
+                key="view"
+                transitionStyle={(val: Animated.Value) => ({
+                  height: val.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 72],
+                  }),
+                })}>
+                <AnimatedView style={styles.servicesRow}>
+                  <View
+                    style={{
+                      marginTop: 8,
+                      marginLeft: 16,
+                    }}>
+                    <Text style={{ color: SECONDARY_TEXT_COLOR }}>
+                      How can we help?
+                    </Text>
+                  </View>
 
-                {serviceSuggestionsObservable.state === 'pending' &&
-                  <ActivityIndicator style={{ flex: 1 }} />}
+                  {serviceSuggestionsObservable.state === 'pending' &&
+                    <ActivityIndicator style={{ flex: 1 }} />}
 
-                {serviceSuggestionsObservable.state === 'fulfilled' &&
-                  <ScrollView horizontal keyboardShouldPersistTaps="always">
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        height: '100%',
-                        flexDirection: 'row',
-                        padding: 8,
-                      }}>
-                      {serviceSuggestionsObservable.value.map(service =>
-                        <TouchableOpacity
-                          key={service.code}
-                          style={styles.serviceButton}
-                          onPress={() => {
-                            chooseServiceFunc(service.code);
-                          }}>
-                          <Text style={{ fontSize: 18, color: YELLOW }}>
-                            {service.name}
-                          </Text>
-                        </TouchableOpacity>,
-                      )}
-                    </View>
-                  </ScrollView>}
-              </AnimatedView>
-            </ViewTransitionGroup.Animate>}
-        </ViewTransitionGroup>
+                  {serviceSuggestionsObservable.state === 'fulfilled' &&
+                    <ScrollView horizontal keyboardShouldPersistTaps="always">
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          height: '100%',
+                          flexDirection: 'row',
+                          padding: 8,
+                        }}>
+                        {serviceSuggestionsObservable.value.map(service =>
+                          <TouchableOpacity
+                            key={service.code}
+                            style={styles.serviceButton}
+                            onPress={() => {
+                              chooseServiceFunc(service.code);
+                            }}>
+                            <Text style={{ fontSize: 18, color: YELLOW }}>
+                              {service.name}
+                            </Text>
+                          </TouchableOpacity>,
+                        )}
+                      </View>
+                    </ScrollView>}
+                </AnimatedView>
+              </ViewTransitionGroup.Animate>}
+          </ViewTransitionGroup>
 
-      </View>
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }

@@ -31,6 +31,7 @@
 .*/node_modules/react-native-linear-gradient/*
 .*/node_modules/react-native-tab-view/*
 .*/node_modules/react-navigation/*
+.*/node_modules/react-native-keyboard-aware-scroll-view/*
 .*/node_modules/findup/test/*
 
 [libs]

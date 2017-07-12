@@ -8,7 +8,7 @@ import type Request from '../store/Request';
 
 import PhotoScreen from './PhotoScreen';
 import DescriptionScreenController from './DescriptionScreenController';
-import QuestionsScreen from './QuestionsScreen';
+import QuestionsScreenController from './QuestionsScreenController';
 import SubmitRequestScreen from './SubmitRequestScreen';
 
 export type RequestScreenProps = {|
@@ -45,7 +45,7 @@ export default StackNavigator(
   {
     Photo: { screen: PhotoScreen },
     Description: { screen: DescriptionScreenController },
-    Questions: { screen: QuestionsScreen },
+    Questions: { screen: QuestionsScreenController },
     SubmitRequest: { screen: SubmitRequestScreen },
   },
   {

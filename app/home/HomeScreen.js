@@ -3,7 +3,6 @@
 import React from 'react';
 import {
   Animated,
-  KeyboardAvoidingView,
   StyleSheet,
   View,
   Text,
@@ -365,17 +364,15 @@ export default class HomeScreen extends React.Component {
           transparent={false}
           visible={modalVisible}>
           {modalVisible &&
-            <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-              <RequestModal
-                screenProps={
-                  ({
-                    closeModalFunc: this.closeModal,
-                    submitRequestFunc: this.submitRequest,
-                    request,
-                  }: RequestScreenProps)
-                }
-              />
-            </KeyboardAvoidingView>}
+            <RequestModal
+              screenProps={
+                ({
+                  closeModalFunc: this.closeModal,
+                  submitRequestFunc: this.submitRequest,
+                  request,
+                }: RequestScreenProps)
+              }
+            />}
         </Modal>
 
       </View>
