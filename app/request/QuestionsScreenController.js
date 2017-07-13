@@ -3,10 +3,16 @@
 import React from 'react';
 import { inject } from 'mobx-react/native';
 
+import type { Service } from '../types';
 import type Ui from '../store/Ui';
 import type { RequestNavigationProps } from './RequestModal';
+import type { RouteParams as SubmitRequestScreenRouteParams } from './SubmitRequestScreen';
 
 import QuestionsScreen from './QuestionsScreen';
+
+export type RouteParams = {|
+  service: Service,
+|};
 
 @inject('ui')
 export default class QuestionsScreenController extends React.Component {
@@ -15,7 +21,19 @@ export default class QuestionsScreenController extends React.Component {
     ui: Ui,
   };
 
-  advance = () => {};
+  advance = () => {
+    const {
+      navigation: { navigate },
+      screenProps: { submitRequestFunc },
+    } = this.props;
+
+    const submitRequestResult = submitRequestFunc();
+
+    navigate(
+      'SubmitRequest',
+      ({ submitRequestResult }: SubmitRequestScreenRouteParams),
+    );
+  };
 
   render() {
     const {
@@ -30,7 +48,7 @@ export default class QuestionsScreenController extends React.Component {
         request={request}
         service={service}
         closeModalFunc={closeModalFunc}
-        submitFunc={this.advance}
+        advanceFunc={this.advance}
       />
     );
   }

@@ -31,8 +31,9 @@
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "apple-icon-precomposed-120.png",
       "scale" : "2x"
     },
     {
@@ -44,5 +45,8 @@
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "pre-rendered" : true
   }
 }

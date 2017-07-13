@@ -234,7 +234,7 @@ export default class HomeScreen extends React.Component {
       email: 'fin.hopkins@boston.gov',
       phone: null,
       location: null,
-      address: null,
+      address: 'City Hall',
       addressId: null,
       questions: request.questions,
       mediaUrl: '',

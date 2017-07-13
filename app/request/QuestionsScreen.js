@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'white',
   },
   descriptionText: {
     color: SECONDARY_TEXT_COLOR,
@@ -31,11 +32,11 @@ export default class QuestionsScreen extends React.Component {
     request: Request,
     service: Service,
     closeModalFunc: () => mixed,
-    submitFunc: () => mixed,
+    advanceFunc: () => mixed,
   };
 
   render() {
-    const { ui, request, service, closeModalFunc, submitFunc } = this.props;
+    const { ui, request, service, closeModalFunc, advanceFunc } = this.props;
     const { statusBarHeight, toolbarHeight } = ui;
 
     return (
@@ -46,7 +47,7 @@ export default class QuestionsScreen extends React.Component {
           centerElement={service.name}
           rightElement="arrow-forward"
           onRightElementPress={
-            request.questionRequirementsMet ? submitFunc : null
+            request.questionRequirementsMet ? advanceFunc : null
           }
           style={{
             container: {
