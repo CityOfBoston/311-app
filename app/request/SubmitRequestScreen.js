@@ -1,61 +1,80 @@
 // @flow
 
 import React from 'react';
-import { Button, Text, View } from 'react-native';
-import { observer } from 'mobx-react/native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { inject, observer } from 'mobx-react/native';
+import type { IPromiseBasedObservable } from 'mobx-utils';
+import { Toolbar } from 'react-native-material-ui';
 
-import type {
-  RequestNavigationProps,
-  ChosenServiceParams,
-  SubmissionParams,
-} from './RequestModal';
+import type { SubmittedRequest } from '../types';
+import type Ui from '../store/ui';
+import type { RequestNavigationProps } from './RequestModal';
 
-type AccumulatedParams = {|
-  ...ChosenServiceParams,
-  ...SubmissionParams,
+export type RouteParams = {|
+  submitRequestResult: IPromiseBasedObservable<SubmittedRequest>,
 |};
 
-const DoneButton = observer(
-  ({
-    navigation: { state },
-    screenProps: { closeModalFunc },
-  }: RequestNavigationProps) => {
-    const { submitRequestResult } = (state.params: AccumulatedParams);
-    return (
-      <Button
-        title="Done"
-        disabled={submitRequestResult.state === 'pending'}
-        onPress={closeModalFunc}
-      />
-    );
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
   },
-);
+});
 
-type State = {|
-  submitting: boolean,
-|};
-
+@inject('ui')
 @observer
 export default class SubmitRequestScreen extends React.Component {
-  props: RequestNavigationProps;
-  state: State = {
-    submitting: false,
+  props: {
+    ui: Ui,
+    ...RequestNavigationProps,
   };
 
-  static navigationOptions = (props: RequestNavigationProps) => ({
-    // headerLeft: null,
-    title: 'Submitting…',
-    headerRight: <DoneButton {...props} />,
-  });
-
-  props: RequestNavigationProps;
-
-  componentDidMount() {}
-
   render() {
+    const {
+      ui,
+      screenProps: { closeModalFunc },
+      navigation: { state },
+    } = this.props;
+    const { statusBarHeight, toolbarHeight } = ui;
+
+    const { submitRequestResult } = (state.params: RouteParams);
+
+    let centerElement;
+    let contents;
+
+    switch (submitRequestResult.state) {
+      case 'pending':
+        centerElement = 'Submitting…';
+        contents = <ActivityIndicator />;
+        break;
+      case 'rejected':
+        centerElement = 'Submission error';
+        contents = <Text>{submitRequestResult.value.toString()}</Text>;
+        break;
+      case 'fulfilled':
+        centerElement = 'Success';
+        contents = <Text>Case ID: {submitRequestResult.value.id}</Text>;
+        break;
+    }
+
     return (
-      <View>
-        <Text>Please wait…</Text>
+      <View style={styles.container}>
+        <Toolbar
+          leftElement={'close'}
+          onLeftElementPress={closeModalFunc}
+          centerElement={centerElement}
+          style={{
+            container: {
+              paddingTop: statusBarHeight,
+              height: toolbarHeight,
+            },
+          }}
+        />
+
+        <View style={{ flex: 1, flexDirection: 'column', padding: 10 }}>
+          {contents}
+        </View>
       </View>
     );
   }

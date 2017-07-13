@@ -61,7 +61,7 @@ export default class DescriptionScreen extends React.Component {
   props: {
     ui: Ui,
     request: Request,
-    serviceSuggestionsObservable: ?IPromiseBasedObservable<ServiceSummary[]>,
+    serviceSuggestionsResult: ?IPromiseBasedObservable<ServiceSummary[]>,
     closeModalFunc: () => mixed,
     chooseServiceFunc: (code: string) => mixed,
   };
@@ -77,7 +77,7 @@ export default class DescriptionScreen extends React.Component {
       request,
       closeModalFunc,
       chooseServiceFunc,
-      serviceSuggestionsObservable,
+      serviceSuggestionsResult,
     } = this.props;
     const { statusBarHeight, toolbarHeight } = ui;
 
@@ -105,7 +105,7 @@ export default class DescriptionScreen extends React.Component {
           />
 
           <ViewTransitionGroup>
-            {serviceSuggestionsObservable &&
+            {serviceSuggestionsResult &&
               <ViewTransitionGroup.Animate
                 key="view"
                 transitionStyle={(val: Animated.Value) => ({
@@ -121,14 +121,14 @@ export default class DescriptionScreen extends React.Component {
                       marginLeft: 16,
                     }}>
                     <Text style={{ color: SECONDARY_TEXT_COLOR }}>
-                      How can we help?
+                      Choose a service:
                     </Text>
                   </View>
 
-                  {serviceSuggestionsObservable.state === 'pending' &&
+                  {serviceSuggestionsResult.state === 'pending' &&
                     <ActivityIndicator style={{ flex: 1 }} />}
 
-                  {serviceSuggestionsObservable.state === 'fulfilled' &&
+                  {serviceSuggestionsResult.state === 'fulfilled' &&
                     <ScrollView horizontal keyboardShouldPersistTaps="always">
                       <View
                         style={{
@@ -137,7 +137,7 @@ export default class DescriptionScreen extends React.Component {
                           flexDirection: 'row',
                           padding: 8,
                         }}>
-                        {serviceSuggestionsObservable.value.map(service =>
+                        {serviceSuggestionsResult.value.map(service =>
                           <TouchableOpacity
                             key={service.code}
                             style={styles.serviceButton}

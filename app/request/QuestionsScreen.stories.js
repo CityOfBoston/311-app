@@ -15,7 +15,7 @@ import QuestionsScreen from './QuestionsScreen';
 const DEFAULT_PROPS = {
   ui: new Ui(),
   closeModalFunc: action('close modal'),
-  submitFunc: action('submit'),
+  advanceFunc: action('advance'),
 };
 
 function requestWithDescription(service: Service) {

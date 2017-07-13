@@ -62,28 +62,28 @@ storiesOf('DescriptionScreen', module)
     <DescriptionScreen
       {...DEFAULT_PROPS}
       request={new Request()}
-      serviceSuggestionsObservable={null}
+      serviceSuggestionsResult={null}
     />,
   )
   .add('loading suggestions', () =>
     <DescriptionScreen
       {...DEFAULT_PROPS}
       request={requestWithDescription()}
-      serviceSuggestionsObservable={fromPromise(new Promise(() => {}))}
+      serviceSuggestionsResult={fromPromise(new Promise(() => {}))}
     />,
   )
   .add('no suggestions', () =>
     <DescriptionScreen
       {...DEFAULT_PROPS}
       request={requestWithDescription()}
-      serviceSuggestionsObservable={fromPromise(Promise.resolve([]))}
+      serviceSuggestionsResult={fromPromise(Promise.resolve([]))}
     />,
   )
   .add('suggestions', () =>
     <DescriptionScreen
       {...DEFAULT_PROPS}
       request={requestWithDescription()}
-      serviceSuggestionsObservable={fromPromise(
+      serviceSuggestionsResult={fromPromise(
         Promise.resolve(SERVICE_SUGGESTIONS),
       )}
     />,

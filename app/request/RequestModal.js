@@ -3,7 +3,7 @@
 import { StackNavigator } from 'react-navigation';
 import type { IPromiseBasedObservable } from 'mobx-utils';
 
-import type { Service, SubmittedRequest } from '../types';
+import type { SubmittedRequest } from '../types';
 import type Request from '../store/Request';
 
 import PhotoScreen from './PhotoScreen';
@@ -15,14 +15,6 @@ export type RequestScreenProps = {|
   closeModalFunc: () => void,
   submitRequestFunc: () => IPromiseBasedObservable<SubmittedRequest>,
   request: Request,
-|};
-
-export type ChosenServiceParams = {|
-  service: Service,
-|};
-
-export type SubmissionParams = {|
-  submitRequestResult: IPromiseBasedObservable<SubmittedRequest>,
 |};
 
 export type RequestNavigationProps = {|

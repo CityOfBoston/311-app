@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { reaction, observable, runInAction } from 'mobx';
+import { reaction, runInAction } from 'mobx';
 import { inject } from 'mobx-react/native';
 import { fromPromise } from 'mobx-utils';
 import type { IPromiseBasedObservable } from 'mobx-utils';
@@ -14,10 +14,8 @@ import loadService from '../queries/load-service';
 import Question from '../store/Question';
 
 import type Ui from '../store/Ui';
-import type {
-  RequestNavigationProps,
-  ChosenServiceParams,
-} from './RequestModal';
+import type { RequestNavigationProps } from './RequestModal';
+import type { RouteParams as QuestionsScreenRouteParams } from './QuestionsScreenController';
 
 import DescriptionScreen from './DescriptionScreen';
 
@@ -28,21 +26,28 @@ export default class DescriptionScreenController extends React.Component {
     ui: Ui,
   };
 
-  @observable
-  serviceSummaries: ?IPromiseBasedObservable<Array<ServiceSummary>> = null;
-  serviceSummariesDisposer: ?Function;
+  state: {
+    serviceSuggestionsResult: ?IPromiseBasedObservable<ServiceSummary[]>,
+  } = {
+    serviceSuggestionsResult: null,
+  };
+
+  serviceSuggestionsDisposer: ?Function;
 
   componentDidMount() {
-    this.serviceSummariesDisposer = reaction(
+    this.serviceSuggestionsDisposer = reaction(
       () => this.props.screenProps.request.description,
       (description: string) => {
+        let serviceSuggestionsResult;
         if (description) {
-          this.serviceSummaries = fromPromise(
+          serviceSuggestionsResult = fromPromise(
             loadServiceSuggestions(fetchGraphql, description),
           );
         } else {
-          this.serviceSummaries = null;
+          serviceSuggestionsResult = null;
         }
+
+        this.setState({ serviceSuggestionsResult });
       },
       {
         fireImmediately: true,
@@ -52,8 +57,8 @@ export default class DescriptionScreenController extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.serviceSummariesDisposer) {
-      this.serviceSummariesDisposer();
+    if (this.serviceSuggestionsDisposer) {
+      this.serviceSuggestionsDisposer();
     }
   }
 
@@ -68,21 +73,21 @@ export default class DescriptionScreenController extends React.Component {
     runInAction(() => {
       request.serviceCode = code;
       request.questions = Question.buildQuestions(service.attributes);
-      navigate('Questions', ({ service }: ChosenServiceParams));
+      navigate('Questions', ({ service }: QuestionsScreenRouteParams));
     });
   };
 
   render() {
-    const { serviceSummaries, chooseService } = this;
     const { ui, screenProps: { request, closeModalFunc } } = this.props;
+    const { serviceSuggestionsResult } = this.state;
 
     return (
       <DescriptionScreen
         ui={ui}
         request={request}
-        serviceSuggestionsObservable={serviceSummaries}
-        closeModalFunc={closeModalFunc()}
-        chooseServiceFunc={chooseService}
+        serviceSuggestionsResult={serviceSuggestionsResult}
+        closeModalFunc={closeModalFunc}
+        chooseServiceFunc={this.chooseService}
       />
     );
   }
