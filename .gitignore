@@ -4,5 +4,7 @@ npm-debug.*
 coverage
 .DS_store
 xcuserdata
-.env
+/.env
 storybook/storyLoader.js
+*.ipa
+*.dSYM.zip
