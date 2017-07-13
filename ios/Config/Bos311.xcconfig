@@ -1,0 +1,2 @@
+// .env and .xcconfig are close enough that we can share config
+#include "../../.env"
