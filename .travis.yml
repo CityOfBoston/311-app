@@ -1,6 +1,7 @@
 language: node_js
+os: osx
 node_js:
-- '8.1.0'
+- '6.11.1'
 before_install:
 - yarn global add greenkeeper-lockfile@1
 before_script:
@@ -14,4 +15,10 @@ branches:
   only:
   - master
   - develop
+  - beta
   - "/^greenkeeper\\/.*$/"
+deploy:
+  provider: script
+  script: yarn deploy-beta
+  on:
+    branch: beta

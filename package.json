@@ -14,7 +14,8 @@
     "precommit": "lint-staged",
     "prepush": "flow --quiet && jest --silent --no-cache --noStackTrace --lastCommit",
     "prestorybook": "rnstl",
-    "storybook": "storybook start -p 7007"
+    "storybook": "storybook start -p 7007",
+    "deploy-beta": "echo DEPLOYING BETA"
   },
   "jest": {
     "preset": "react-native",
