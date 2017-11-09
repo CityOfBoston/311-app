@@ -83,7 +83,7 @@
     "jest": "^20.0.4",
     "lint-staged": "^4.0.0",
     "prettier": "^1.4.4",
-    "react-dom": "16.0.0-alpha.12",
+    "react-dom": "16.1.0",
     "react-native-dotenv": "^0.1.0",
     "react-native-storybook-loader": "^1.4.1",
     "react-test-renderer": "16.0.0-alpha.12"
